@@ -1,3 +1,7 @@
+use lineio::LineIO;
+
 fn main() {
-    println!("Hello, world!");
+    let mut lineio = LineIO::new(&"test.txt".to_string());
+    let s = lineio.getline().unwrap();
+    println!("Read {}", s);
 }
