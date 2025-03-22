@@ -8,3 +8,16 @@ are with the hash mark.  Rather than rebuilding a file reader every time (and ha
 to include the use descriptions, and whatnot), just a simple wrapper.  Call getline to get
 a line, unwrap as needed.  The new function takes a string filename.
 
+## Example
+
+Here's a simple example of reading in a file.
+
+```
+use lineio::LineIO;
+
+fn main() {
+    let mut lineio = LineIO::new(&"test.txt".to_string());
+    let s = lineio.getline().unwrap();
+    println!("Read {}", s);
+}
+```
