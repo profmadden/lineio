@@ -17,9 +17,17 @@
 //! use lineio::LineIO;
 //! 
 //! fn main() {
-//!    let mut lineio = LineIO::new(&"test.txt".to_string());
-//!    let s = lineio.getline().unwrap();
-//!     println!("Read {}", s);
+//!     let mut lineio = match LineIO::new(&"test.txt".to_string()) {
+//!        Ok(reader) => reader,
+//!        Err(error) => {panic!("File opening error: {error:?}");}
+//!    };
+//!    loop {
+//!        let s = match lineio.getline() {
+//!            Ok(str) => str,
+//!            Err(_error) => break,
+//!        };
+//!        println!("Read {}", s);
+//!    }
 //! }
 //! ```
 
@@ -38,12 +46,12 @@ pub struct LineIO {
 impl LineIO {
     /// Opens the indicated file, and creates a reader to read
     /// in data.
-    pub fn new(filename: &String) -> LineIO {
-        let f = File::open(filename).unwrap();
+    pub fn new(filename: &String) -> std::io::Result<LineIO> {
+        let f = File::open(filename)?;
         let reader = BufReader::with_capacity(32000, f);
-        LineIO {
+        Ok(LineIO {
             reader,
-        }
+        })
     }
 
     /// Parses input, skipping lines that begin with a hash
